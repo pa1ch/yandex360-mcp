@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Release workflow (`.github/workflows/release.yml`): pushing a `vX.Y.Z` tag builds,
-  runs tests, and publishes to PyPI via **Trusted Publishing** (OIDC, no token), then
-  creates a GitHub Release. The tag must match the version in `pyproject.toml` and
-  `server.json`.
+  runs tests, and then, in parallel, publishes to **PyPI** via Trusted Publishing (OIDC,
+  no token), creates a **GitHub Release**, and publishes to the **MCP Registry** via
+  GitHub OIDC. The tag must match the version in `pyproject.toml`; the `server.json`
+  version is set from the tag automatically at publish time.
 - This changelog.
 
 ## [0.1.1] - 2026-07-19
