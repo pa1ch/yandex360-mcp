@@ -57,7 +57,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
     "yandex360": {
       "type": "stdio",
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"],
+      "args": ["yandex360-mcp@latest"],
       "env": {
         "WIKI_TOKEN": "${WIKI_TOKEN}",
         "WIKI_ORG_ID": "${WIKI_ORG_ID}"
@@ -67,7 +67,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 ```
 
-После публикации на PyPI `args` сокращается до `["yandex360-mcp@latest"]`.
+Чтобы брать свежий `main` вместо релиза, используй
+`args`: `["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"]`.
 </details>
 
 <details>
@@ -81,7 +82,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
   "mcpServers": {
     "yandex360": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"],
+      "args": ["yandex360-mcp@latest"],
       "env": {
         "WIKI_TOKEN": "ваш-oauth-токен",
         "WIKI_ORG_ID": "ваш-org-id"
@@ -104,7 +105,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
   "mcpServers": {
     "yandex360": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"],
+      "args": ["yandex360-mcp@latest"],
       "env": {
         "WIKI_TOKEN": "ваш-oauth-токен",
         "WIKI_ORG_ID": "ваш-org-id"
@@ -130,7 +131,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
     "yandex360": {
       "type": "stdio",
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"],
+      "args": ["yandex360-mcp@latest"],
       "env": {
         "WIKI_TOKEN": "${input:wiki_token}",
         "WIKI_ORG_ID": "${input:wiki_org_id}"
@@ -147,7 +148,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 Подойдёт любой stdio-клиент. Команда запуска:
 
 ```
-uvx --from git+https://github.com/pa1ch/yandex360-mcp@main yandex360-mcp
+uvx yandex360-mcp@latest
 ```
 
 с `WIKI_TOKEN` и `WIKI_ORG_ID` в окружении.

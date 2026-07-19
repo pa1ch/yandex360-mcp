@@ -56,7 +56,7 @@ Add to your project's `.mcp.json` (or run `claude mcp add`):
     "yandex360": {
       "type": "stdio",
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"],
+      "args": ["yandex360-mcp@latest"],
       "env": {
         "WIKI_TOKEN": "${WIKI_TOKEN}",
         "WIKI_ORG_ID": "${WIKI_ORG_ID}"
@@ -66,7 +66,8 @@ Add to your project's `.mcp.json` (or run `claude mcp add`):
 }
 ```
 
-Once published to PyPI you can shorten `args` to `["yandex360-mcp@latest"]`.
+To track the unreleased `main` branch instead, use
+`args`: `["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"]`.
 </details>
 
 <details>
@@ -80,7 +81,7 @@ Edit `claude_desktop_config.json`
   "mcpServers": {
     "yandex360": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"],
+      "args": ["yandex360-mcp@latest"],
       "env": {
         "WIKI_TOKEN": "your-oauth-token",
         "WIKI_ORG_ID": "your-org-id"
@@ -103,7 +104,7 @@ Add to `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global):
   "mcpServers": {
     "yandex360": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"],
+      "args": ["yandex360-mcp@latest"],
       "env": {
         "WIKI_TOKEN": "your-oauth-token",
         "WIKI_ORG_ID": "your-org-id"
@@ -129,7 +130,7 @@ Add to `.vscode/mcp.json`:
     "yandex360": {
       "type": "stdio",
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/pa1ch/yandex360-mcp@main", "yandex360-mcp"],
+      "args": ["yandex360-mcp@latest"],
       "env": {
         "WIKI_TOKEN": "${input:wiki_token}",
         "WIKI_ORG_ID": "${input:wiki_org_id}"
@@ -146,7 +147,7 @@ Add to `.vscode/mcp.json`:
 Any stdio MCP client works. Point it at the command:
 
 ```
-uvx --from git+https://github.com/pa1ch/yandex360-mcp@main yandex360-mcp
+uvx yandex360-mcp@latest
 ```
 
 with `WIKI_TOKEN` and `WIKI_ORG_ID` in the environment.
