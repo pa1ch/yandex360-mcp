@@ -76,7 +76,12 @@ To track the unreleased `main` branch instead, use
 <details>
 <summary><b>Claude Desktop</b></summary>
 
-Edit `claude_desktop_config.json`
+**One-click install:** download the latest `yandex360-mcp-*.mcpb` from
+[Releases](https://github.com/pa1ch/yandex360-mcp/releases), open it in Claude Desktop,
+and fill in the token fields — no JSON editing. Requires [`uv`](https://docs.astral.sh/uv/)
+installed on the machine.
+
+Or configure manually — edit `claude_desktop_config.json`
 (macOS: `~/Library/Application Support/Claude/`, Windows: `%APPDATA%\Claude\`):
 
 ```json

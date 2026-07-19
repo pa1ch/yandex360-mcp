@@ -1,0 +1,17 @@
+# Каталоги/файлы, не нужные внутри .mcpb-бандла (в бандл идут pyproject.toml + src/).
+.git*
+.github
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.env
+.env.example
+tests
+server.json
+CHANGELOG.md
+*.mcpb

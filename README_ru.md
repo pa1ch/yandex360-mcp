@@ -75,7 +75,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 <details>
 <summary><b>Claude Desktop</b></summary>
 
-Правим `claude_desktop_config.json`
+**Установка в один клик:** скачай свежий `yandex360-mcp-*.mcpb` из
+[Releases](https://github.com/pa1ch/yandex360-mcp/releases), открой его в Claude Desktop
+и заполни поля токенов — JSON править не нужно. Требуется установленный
+[`uv`](https://docs.astral.sh/uv/).
+
+Или настрой вручную — правим `claude_desktop_config.json`
 (macOS: `~/Library/Application Support/Claude/`, Windows: `%APPDATA%\Claude\`):
 
 ```json

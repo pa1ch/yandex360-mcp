@@ -6,12 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-07-19
+
 ### Added
-- Release workflow (`.github/workflows/release.yml`): pushing a `vX.Y.Z` tag builds,
-  runs tests, and then, in parallel, publishes to **PyPI** via Trusted Publishing (OIDC,
-  no token), creates a **GitHub Release**, and publishes to the **MCP Registry** via
-  GitHub OIDC. The tag must match the version in `pyproject.toml`; the `server.json`
-  version is set from the tag automatically at publish time.
+- One-click **Claude Desktop** install: a `.mcpb` bundle (`manifest.json` + `.mcpbignore`)
+  is built and attached to every GitHub Release. Users fill token fields in a form instead
+  of editing JSON (requires `uv` installed on the machine).
+- Release workflow (`.github/workflows/release.yml`): pushing a `vX.Y.Z` tag builds, runs
+  tests, and in parallel publishes to **PyPI** (Trusted Publishing / OIDC, no token),
+  builds the **.mcpb** bundle, creates a **GitHub Release**, and publishes to the
+  **MCP Registry** (GitHub OIDC). The tag must match `pyproject.toml`; the `server.json`
+  and `manifest.json` versions are set from the tag automatically at publish time.
 - This changelog.
 
 ## [0.1.1] - 2026-07-19

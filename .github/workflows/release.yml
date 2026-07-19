@@ -38,6 +38,35 @@ jobs:
           name: dist
           path: dist/
 
+  mcpb:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+
+      - name: Install mcpb CLI
+        run: npm install -g @anthropic-ai/mcpb
+
+      - name: Set manifest version from tag
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          jq --arg v "$VERSION" '.version = $v' manifest.json > manifest.tmp
+          mv manifest.tmp manifest.json
+
+      - name: Validate and pack .mcpb
+        run: |
+          set -euo pipefail
+          mcpb validate manifest.json
+          mcpb pack . "yandex360-mcp-${GITHUB_REF_NAME}.mcpb"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mcpb
+          path: "*.mcpb"
+
   pypi:
     needs: build
     runs-on: ubuntu-latest
@@ -57,7 +86,7 @@ jobs:
           print-hash: true
 
   github-release:
-    needs: pypi
+    needs: [pypi, mcpb]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -69,10 +98,15 @@ jobs:
           name: dist
           path: dist/
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: mcpb
+          path: mcpb/
+
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --notes "See [CHANGELOG.md](CHANGELOG.md)."
+        run: gh release create "$GITHUB_REF_NAME" dist/* mcpb/*.mcpb --title "$GITHUB_REF_NAME" --notes "See [CHANGELOG.md](CHANGELOG.md)."
 
   mcp-registry:
     needs: pypi

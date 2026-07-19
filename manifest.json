@@ -1,0 +1,57 @@
+{
+  "manifest_version": "0.4",
+  "name": "yandex360-mcp",
+  "display_name": "Yandex 360",
+  "version": "0.1.2",
+  "description": "Tools for Yandex 360 services (Yandex Wiki) — read and edit wiki pages from your AI assistant.",
+  "author": {
+    "name": "Pavel Chugaev"
+  },
+  "homepage": "https://github.com/pa1ch/yandex360-mcp",
+  "documentation": "https://github.com/pa1ch/yandex360-mcp#readme",
+  "server": {
+    "type": "uv",
+    "entry_point": "yandex360-mcp",
+    "mcp_config": {
+      "command": "uv",
+      "args": ["run", "yandex360-mcp"],
+      "env": {
+        "PYTHONPATH": "${__dirname}",
+        "WIKI_TOKEN": "${user_config.wiki_token}",
+        "WIKI_ORG_ID": "${user_config.wiki_org_id}"
+      }
+    }
+  },
+  "user_config": {
+    "wiki_token": {
+      "type": "string",
+      "title": "Yandex Wiki OAuth token",
+      "description": "OAuth token with wiki:read / wiki:write scopes",
+      "sensitive": true,
+      "required": true
+    },
+    "wiki_org_id": {
+      "type": "string",
+      "title": "Yandex 360 organization ID",
+      "description": "Your Yandex 360 organization ID (sent as the X-Org-Id header)",
+      "required": true
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "linux", "win32"],
+    "runtimes": {
+      "python": ">=3.10"
+    }
+  },
+  "tools": [
+    { "name": "wiki_whoami", "description": "Current API user — quick access check" },
+    { "name": "wiki_get_page", "description": "Get a wiki page by slug (optional YFM body)" },
+    { "name": "wiki_get_page_by_id", "description": "Get a wiki page by numeric id (optional YFM body)" },
+    { "name": "wiki_tree", "description": "Page tree — descendants of a slug (navigation)" },
+    { "name": "wiki_search", "description": "Full-text search across wiki pages" },
+    { "name": "wiki_create_page", "description": "Create a wiki page (title, slug, YFM content)" },
+    { "name": "wiki_update_page", "description": "Update title and/or content of a page by id" },
+    { "name": "wiki_append_content", "description": "Append YFM content to the end of a page" },
+    { "name": "wiki_delete_page", "description": "Delete a wiki page by id (destructive)" }
+  ]
+}
