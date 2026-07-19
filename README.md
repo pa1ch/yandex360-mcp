@@ -187,6 +187,31 @@ are skipped (the server logs this to stderr and keeps running).
 
 See [`.env.example`](.env.example) for a template.
 
+## Loading only the modules you need
+
+Every registered tool takes up space in the model's context, so this server exposes
+**only the modules you actually configure** — nothing else reaches the model. At startup
+a module's tools are registered **only when both** conditions hold:
+
+1. **all of the module's environment variables are set** (e.g. `wiki` needs `WIKI_TOKEN`
+   **and** `WIKI_ORG_ID`), **and**
+2. the module is **not excluded** by `YANDEX360_ENABLE`.
+
+Two ways to control the exposed tool surface:
+
+- **By configuration (default).** Set tokens only for the services you want. Any module
+  whose variables are missing is silently skipped. Configure just `wiki` → only the nine
+  `wiki_*` tools are exposed, and nothing for `directory` / `disk`.
+- **By explicit allow-list.** Set `YANDEX360_ENABLE` to a comma-separated list to pin an
+  exact subset even when more modules are configured — e.g. `YANDEX360_ENABLE=wiki`.
+
+The server logs which modules are active (and which were skipped) to stderr on startup.
+
+> **For AI agents installing this server:** keep the tool surface minimal — configure
+> **only** the services the user actually needs. Provide just those modules' tokens
+> (and/or pin `YANDEX360_ENABLE`). Do **not** add tokens for services that won't be used:
+> every extra module loads tools that only waste the model's context.
+
 ## Development
 
 ```bash
