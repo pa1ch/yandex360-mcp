@@ -1,6 +1,7 @@
 # MCP-сервер Яндекс 360
 
 [![PyPI version](https://img.shields.io/pypi/v/yandex360-mcp.svg)](https://pypi.org/project/yandex360-mcp/)
+[![MCP Registry](https://img.shields.io/badge/MCP_Registry-io.github.pa1ch%2Fyandex360--mcp-6E44FF)](https://registry.modelcontextprotocol.io/v0/servers?search=yandex360)
 [![Tests](https://github.com/pa1ch/yandex360-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/pa1ch/yandex360-mcp/actions/workflows/test.yml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
