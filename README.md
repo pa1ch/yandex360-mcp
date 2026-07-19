@@ -1,3 +1,5 @@
+<!-- mcp-name: io.github.pa1ch/yandex360-mcp -->
+
 # Yandex 360 MCP Server
 
 [![PyPI version](https://img.shields.io/pypi/v/yandex360-mcp.svg)](https://pypi.org/project/yandex360-mcp/)
