@@ -15,8 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # setup-uv с v8 больше не публикует плавающие теги мажоров (v9 не существует) —
+      # здесь и в release.yml версия указывается точно.
       - name: Install uv
-        uses: astral-sh/setup-uv@v9
+        uses: astral-sh/setup-uv@v9.0.0
         with:
           python-version: ${{ matrix.python-version }}
 
