@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   обновление незаметно.
 - Зависимость `mcp>=2.0.0,<3`. Верхняя граница по мажору теперь ставится сразу: именно её
   отсутствие привело к поломке 0.1.2 в проде.
+- Обновлены GitHub Actions: `checkout` v4→v7, `setup-uv` v5→v9, `upload-artifact` v4→v7,
+  `download-artifact` v4→v8, `setup-node` v4→v7. Уходит предупреждение о выводе Node 20 из
+  эксплуатации, а кеш uv наконец инвалидируется (дефолтный `cache-dependency-glob` с v6
+  включает `pyproject.toml` — раньше он искал только `uv.lock`, который у нас в `.gitignore`).
 
 ### Added
 - Тесты сборки сервера (`tests/test_server.py`): регистрация инструментов, пропуск
