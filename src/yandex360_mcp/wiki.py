@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import os
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 from ._http import ApiClient
 
@@ -24,8 +24,8 @@ def is_configured() -> bool:
     return bool(os.environ.get("WIKI_TOKEN") and os.environ.get("WIKI_ORG_ID"))
 
 
-def register(mcp: FastMCP) -> None:
-    """Зарегистрировать инструменты Вики в переданном сервере FastMCP."""
+def register(mcp: MCPServer) -> None:
+    """Зарегистрировать инструменты Вики в переданном сервере MCPServer."""
     client = ApiClient(API_BASE, os.environ.get("WIKI_TOKEN", ""), os.environ.get("WIKI_ORG_ID", ""))
 
     @mcp.tool()

@@ -33,6 +33,23 @@ jobs:
       - name: Build
         run: uv build
 
+      # Ставим собранное колесо в чистое окружение и запускаем — так же, как это
+      # сделает uvx у пользователя. Ловит поломки, которых не видно из uv run:
+      # зависимость, разрешённую в несовместимую версию (см. mcp 2.0), и всё, что
+      # падает на импорте. MCP-клиенты такое не показывают — сервер просто исчезает.
+      - name: Smoke-test the built wheel in a clean environment
+        env:
+          WIKI_TOKEN: dummy-token
+          WIKI_ORG_ID: "42"
+        run: |
+          set -euo pipefail
+          uv venv /tmp/smoke
+          uv pip install --python /tmp/smoke/bin/python dist/*.whl
+          /tmp/smoke/bin/python -c "import importlib.metadata as m; print('resolved mcp =', m.version('mcp'))"
+          OUT=$(/tmp/smoke/bin/yandex360-mcp </dev/null 2>&1)
+          echo "$OUT"
+          grep -q "активные модули: wiki" <<<"$OUT"
+
       - uses: actions/upload-artifact@v4
         with:
           name: dist

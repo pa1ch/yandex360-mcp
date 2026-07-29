@@ -11,7 +11,7 @@ from __future__ import annotations
 import os
 import sys
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 from . import wiki
 
@@ -29,9 +29,9 @@ def _enabled_names() -> set[str] | None:
     return {name.strip() for name in raw.split(",") if name.strip()}
 
 
-def build_server() -> FastMCP:
-    """Создать FastMCP и зарегистрировать в нём активные модули сервисов."""
-    mcp = FastMCP("yandex360")
+def build_server() -> MCPServer:
+    """Создать MCPServer и зарегистрировать в нём активные модули сервисов."""
+    mcp = MCPServer("yandex360")
     enabled = _enabled_names()
     active: list[str] = []
     for name, module in MODULES.items():
