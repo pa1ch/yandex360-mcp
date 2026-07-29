@@ -2,7 +2,7 @@
   "manifest_version": "0.4",
   "name": "yandex360-mcp",
   "display_name": "Yandex 360",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Tools for Yandex 360 services (Yandex Wiki) — read and edit wiki pages from your AI assistant.",
   "author": {
     "name": "Pavel Chugaev"

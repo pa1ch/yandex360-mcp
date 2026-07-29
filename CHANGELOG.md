@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-07-29
+
+### Fixed
+- Пин зависимости на `mcp>=1.2.0,<2`. В MCP SDK 2.0.0 удалён модуль `mcp.server.fastmcp`
+  (переехал в `mcp.server.mcpserver`), из-за чего `uvx yandex360-mcp` тянул 2.0.0 и сервер
+  падал на импорте до старта — MCP-клиенты молча выкидывали его из списка серверов.
+
 ## [0.1.2] - 2026-07-19
 
 ### Added
