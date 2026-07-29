@@ -63,3 +63,25 @@ def test_tool_schemas_are_generated(monkeypatch):
     assert get_page.description
     assert set(get_page.input_schema["properties"]) == {"slug", "with_content"}
     assert get_page.input_schema["required"] == ["slug"]
+
+
+def test_tool_annotations_mark_writes_and_destructive_actions(monkeypatch):
+    """Клиент должен отличать чтение от записи, а запись — от разрушающих действий."""
+    _configure_wiki(monkeypatch)
+    tools = {t.name: t for t in asyncio.run(build_server().list_tools())}
+
+    read_only = ["wiki_whoami", "wiki_get_page", "wiki_get_page_by_id", "wiki_tree", "wiki_search"]
+    writes = ["wiki_create_page", "wiki_append_content"]
+    # update заменяет тело страницы целиком, delete удаляет её — оба разрушающие.
+    destructive = ["wiki_update_page", "wiki_delete_page"]
+
+    assert set(read_only) | set(writes) | set(destructive) == set(tools), "инструмент без разметки"
+
+    for name in read_only:
+        assert tools[name].annotations.read_only_hint is True, name
+    for name in writes:
+        assert tools[name].annotations.read_only_hint is False, name
+        assert tools[name].annotations.destructive_hint is False, name
+    for name in destructive:
+        assert tools[name].annotations.read_only_hint is False, name
+        assert tools[name].annotations.destructive_hint is True, name

@@ -13,10 +13,20 @@ from __future__ import annotations
 import os
 
 from mcp.server.mcpserver import MCPServer
+from mcp.types import ToolAnnotations
 
 from ._http import ApiClient
 
 API_BASE = "https://api.wiki.yandex.net"
+
+# Подсказки клиенту о характере инструмента: по ним он решает, спрашивать ли
+# подтверждение. Все инструменты ходят во внешний API — отсюда openWorldHint.
+# Для пишущих destructiveHint выставлен явно: по спецификации при readOnlyHint=False
+# он по умолчанию считается true, и без этого безобидное создание страницы выглядело
+# бы для клиента так же опасно, как удаление.
+_READ_ONLY = ToolAnnotations(readOnlyHint=True, openWorldHint=True)
+_WRITE = ToolAnnotations(readOnlyHint=False, destructiveHint=False, openWorldHint=True)
+_DESTRUCTIVE = ToolAnnotations(readOnlyHint=False, destructiveHint=True, openWorldHint=True)
 
 
 def is_configured() -> bool:
@@ -28,12 +38,12 @@ def register(mcp: MCPServer) -> None:
     """Зарегистрировать инструменты Вики в переданном сервере MCPServer."""
     client = ApiClient(API_BASE, os.environ.get("WIKI_TOKEN", ""), os.environ.get("WIKI_ORG_ID", ""))
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ONLY)
     def wiki_whoami() -> dict:
         """Кто я: данные текущего пользователя API Вики (проверка доступа)."""
         return client.request("GET", "/v1/users/me")
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ONLY)
     def wiki_get_page(slug: str, with_content: bool = True) -> dict:
         """Получить страницу по её slug (адресу, напр. 'homepage' или 'razrabotka/deploy').
 
@@ -44,13 +54,13 @@ def register(mcp: MCPServer) -> None:
             params["fields"] = "content"
         return client.request("GET", "/v1/pages", params=params)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ONLY)
     def wiki_get_page_by_id(page_id: int, with_content: bool = True) -> dict:
         """Получить страницу по числовому id. with_content=True — вернуть тело (YFM)."""
         params = {"fields": "content"} if with_content else None
         return client.request("GET", f"/v1/pages/{page_id}", params=params)
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ONLY)
     def wiki_tree(slug: str = "homepage", page_size: int = 100) -> dict:
         """Дерево страниц: все потомки страницы с данным slug (для навигации по вики).
 
@@ -62,7 +72,7 @@ def register(mcp: MCPServer) -> None:
             params={"slug": slug, "include_self": True, "page_size": page_size},
         )
 
-    @mcp.tool()
+    @mcp.tool(annotations=_READ_ONLY)
     def wiki_search(query: str, page_size: int = 20) -> dict:
         """Полнотекстовый поиск по страницам вики. Возвращает совпадения с id и slug."""
         return client.request(
@@ -71,7 +81,7 @@ def register(mcp: MCPServer) -> None:
             body={"query": query, "page_size": page_size, "highlight": True},
         )
 
-    @mcp.tool()
+    @mcp.tool(annotations=_WRITE)
     def wiki_create_page(title: str, slug: str, content: str = "") -> dict:
         """Создать страницу. title — заголовок, slug — адрес (напр. 'razrabotka/notes'),
         content — тело в формате YFM. Родитель определяется префиксом slug.
@@ -83,7 +93,7 @@ def register(mcp: MCPServer) -> None:
             body={"title": title, "slug": slug, "content": content},
         )
 
-    @mcp.tool()
+    @mcp.tool(annotations=_DESTRUCTIVE)
     def wiki_update_page(
         page_id: int, title: str | None = None, content: str | None = None
     ) -> dict:
@@ -103,7 +113,7 @@ def register(mcp: MCPServer) -> None:
             "POST", f"/v1/pages/{page_id}", params={"fields": "content"}, body=body
         )
 
-    @mcp.tool()
+    @mcp.tool(annotations=_WRITE)
     def wiki_append_content(page_id: int, content: str) -> dict:
         """Дописать content (YFM) в конец страницы, не затрагивая существующий текст."""
         return client.request(
@@ -113,7 +123,7 @@ def register(mcp: MCPServer) -> None:
             body={"content": content},
         )
 
-    @mcp.tool()
+    @mcp.tool(annotations=_DESTRUCTIVE)
     def wiki_delete_page(page_id: int) -> dict:
         """Удалить страницу по id. Действие деструктивное — сначала уточни у пользователя."""
         return client.request("DELETE", f"/v1/pages/{page_id}")
